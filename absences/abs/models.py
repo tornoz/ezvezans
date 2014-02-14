@@ -22,7 +22,7 @@ class Cours(models.Model):
     dateDebut = models.DateTimeField()
     dateFin = models.DateTimeField()
     enseignant = models.ForeignKey(Enseignant)
-
+    
 class Absence(models.Model):
     cours = models.ForeignKey(Cours)
     etudiant = models.ForeignKey(Etudiant)
@@ -31,3 +31,5 @@ class Justificatif(models.Model):
     dateDebut = models.DateTimeField()
     dateFin = models.DateTimeField()
     etudiant = models.ForeignKey(Etudiant)
+   
+
