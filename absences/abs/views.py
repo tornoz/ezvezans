@@ -8,11 +8,12 @@ from django.contrib.auth.models import User, Group
 def index(request):
     groups = request.user.groups.values_list('name',flat=True)
     print(groups)
-    template = loader.get_template('report/' + 'enseignant' + '.html')
+    template = loader.get_template('report/' + groups[0] + '.html')
     name = request.user.first_name + ' ' + request.user.last_name
     if name == ' ':
         name = request.user
     context = RequestContext(request, {
-        'user_name': name
+        'user_name': name,
+        'title':'Accueil'
     })
     return HttpResponse(template.render(context))

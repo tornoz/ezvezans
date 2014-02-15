@@ -1,0 +1,20 @@
+h1.title {
+    font-size:70px;
+    color:#777777;
+    font-weight:normal;
+    font-family:Times;
+    text-align:center;
+}
+
+.login .form{
+    width:230px;
+    margin:auto;
+    text-align:center;
+} 
+.login input {
+    border-radius:10px;
+    background-color:#CCCCCC;
+}
+.error {
+    color:#FF4A4A;
+}

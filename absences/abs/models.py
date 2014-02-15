@@ -10,6 +10,7 @@ class Utilisateur(models.Model):
 
 class Etudiant(Utilisateur):
     groupe = models.CharField(max_length=100)
+    departement = models.CharField(max_length=100)
     promotion = models.CharField(max_length=100)
 
 class Enseignant(Utilisateur):
@@ -31,5 +32,6 @@ class Justificatif(models.Model):
     dateDebut = models.DateTimeField()
     dateFin = models.DateTimeField()
     etudiant = models.ForeignKey(Etudiant)
+    valide = models.BooleanField()
    
 

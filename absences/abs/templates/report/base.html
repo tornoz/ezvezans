@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block menubar %}
+
+<div class="menubar">
+    <table>
+        <tr>
+            <td class="title">PolyEzvezañs</td>
+            <td class="logout">{{user_name}} <a href="logout">Déconnexion</a></td>
+        </tr>
+    </table>
+</div>
+
+{% endblock %}
+
+{% block content %}
+
+<h1>Bonjour, {{user_name}}</h1>
+
+<div id="report_content">
+    {% block report_content %}{% endblock %}
+</div>
+
+<p></p>
+
+{% endblock %}
+
