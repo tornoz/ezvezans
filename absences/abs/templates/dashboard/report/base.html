@@ -1,21 +1,9 @@
-{% extends "base.html" %}
-
-{% block menubar %}
-
-<div class="menubar">
-    <table>
-        <tr>
-            <td class="title">PolyEzvezañs</td>
-            <td class="logout">{{user_name}} <a href="logout">Déconnexion</a></td>
-        </tr>
-    </table>
-</div>
-
-{% endblock %}
+{% extends "dashboard/base.html" %}
 
 {% block content %}
-
-<h1>Bonjour, {{user_name}}</h1>
+ {% load staticfiles %}
+    <link rel="stylesheet" href="{% static "style/report.css" %}" />
+<img class="dbicon" src="/static/img/{{groupname}}.png"/><span class="dashboard">Tableau de bord</span>
 
 <div id="report_content">
     {% block report_content %}{% endblock %}

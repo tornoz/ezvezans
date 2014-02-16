@@ -35,3 +35,23 @@ body {
 .menubar .title {
 color:white;
 }
+
+button.clean-gray {
+    background-color: rgb(238, 238, 238);
+    background-image: -moz-linear-gradient(center top , rgb(238, 238, 238), rgb(204, 204, 204));
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(204, 204, 204) rgb(204, 204, 204) rgb(187, 187, 187);
+    -moz-border-top-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    border-image: none;
+    border-radius: 3px;
+    color: rgb(51, 51, 51);
+    font: bold 12px/1 "Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Verdana,sans-serif;
+    padding: 4px 0px;
+    text-align: center;
+    text-shadow: 0px 1px 0px rgb(238, 238, 238);
+    width: 150px;
+}

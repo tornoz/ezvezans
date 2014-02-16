@@ -1,0 +1,18 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+<form method="post" action="">
+    {% csrf_token %}
+    Créer un {{ entity_name }}
+    <table>
+        {{ formset }}
+    </table>
+   <a href="..">
+
+    <button class="clean-gray" type="button">Annuler</button></a><input type="submit" value="Enregistrer"/>
+</form>
+
+{% endblock %}
+
+
+

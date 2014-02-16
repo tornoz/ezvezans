@@ -1,0 +1,10 @@
+.dashboard {
+    font-size:50px;
+    font-family:Times;
+    font-weight:bold;
+}
+
+img.dbicon {
+    width:32px;
+    margin:2px;
+}
