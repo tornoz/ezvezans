@@ -32,8 +32,9 @@ body {
     
 }
 
-.menubar .title {
+.menubar .title a{
 color:white;
+text-decoration:none;
 }
 
 button.clean-gray {

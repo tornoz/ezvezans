@@ -8,16 +8,20 @@ class Utilisateur(models.Model):
     user = models.ForeignKey(User);
     class Meta:
         abstract = True
-
-
-class Promotion(models.Model):
-    department = models.CharField(max_length = 100)
+    def __str__(instance):
+        return instance.identifiant
+	
+class Groupe(models.Model):
+    departement = models.CharField(max_length = 100)
     specialite = models.CharField(max_length = 100)
     annee = models.IntegerField()
+    groupe = models.IntegerField()
+    def __str__(instance):
+        return instance.departement + instance.annee.__str__() + ' ' + instance.specialite + instance.groupe.__str__()
 
 class Etudiant(Utilisateur):
-    groupe = models.CharField(max_length=100)
-    promotion = models.ForeignKey(Promotion)
+    groupe = models.ForeignKey(Groupe)
+    
 
 class Enseignant(Utilisateur):
     departement = models.CharField(max_length=200)
@@ -36,8 +40,10 @@ class Cours(models.Model):
     dateDebut = models.DateTimeField()
     dateFin = models.DateTimeField()
     enseignant = models.ForeignKey(Enseignant)
-    promotion = models.ManyToManyField(Promotion)
+    groupe = models.ManyToManyField(Groupe)
     matiere = models.CharField(max_length = 100)
+    def __str__(instance):
+        return instance.dateDebut.__str__() + '->' + instance.dateFin.__str__() + ' : ' + instance.matiere + '(' + instance.enseignant.__str__() + ')'
     
 class Absence(models.Model):
     cours = models.ForeignKey(Cours)
