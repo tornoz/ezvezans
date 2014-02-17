@@ -5,7 +5,7 @@ from django.template import RequestContext, loader
 from django.contrib.auth.models import User, Group
 from abs.models import Etudiant, Enseignant, Secretaire, Cours, Justificatif, Absence
 from django.forms.models import modelformset_factory
-#from abs.forms import JustificatifForm
+from abs.forms import JustificatifForm
 
 @login_required
 def index(request):
@@ -76,7 +76,6 @@ def ajax_absent(request, coursid):
         return HttpResponse(string)
     return redirect('/abs')
 
-"""
 def add_justificatif(request):
     formset = modelformset_factory(Justificatif, form=JustificatifForm)
     template = loader.get_template('dashboard/form.html')
@@ -88,4 +87,3 @@ def add_justificatif(request):
         'entity_name':'justificatif'
     })
     return HttpResponse(template.render(context))
-"""

@@ -67,4 +67,4 @@ class Justificatif(models.Model):
     dateFin = models.DateTimeField()
     etudiant = models.ForeignKey(Etudiant)
     valide = models.BooleanField(default=False)
-    #file=models.CharField(max_length=500)
+    path=models.CharField(max_length=500)
