@@ -71,11 +71,29 @@ def ajax_absent(request, coursid):
             if e not in absents:
                 fullname = e.user.first_name + ' ' + e.user.last_name;
                 if fullname == ' ':
-                    fullname = e.user
-                string += (fullname + ";")
+                    fullname = e.user.__str__()
+                string += (fullname + "," + e.user.__str__() + ";")
         return HttpResponse(string)
     return redirect('/abs')
 
+
+def ajax_insert_absent(request, coursid, etudiantid):
+    if request.is_ajax():
+        cours = Cours.objects.get(id=coursid)
+        user = User.objects.get(username=etudiantid)
+        etudiant = Etudiant.objects.get(user=user)
+        absence = Absence(cours = cours, etudiant = etudiant)
+        absence.save()
+        return HttpResponse("ok")
+    return redirect('/abs')
+    
+def ajax_delete_absent(request, id):
+    if request.is_ajax():
+        absence = Absence(id=id)
+        absence.delete()
+        return HttpResponse("ok")
+    return redirect('/abs')
+    
 def add_justificatif(request):
     formset = modelformset_factory(Justificatif, form=JustificatifForm)
     template = loader.get_template('dashboard/form.html')

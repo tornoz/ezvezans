@@ -66,13 +66,13 @@ color:#555555
     opacity:1;
 }
 
-.rm_absence {
+.rm_absence, .rm_select, .ok_select {
     margin-bottom:-5px;
     opacity:0.5;
     width:24px;
     cursor:pointer;
 }
 
-.rm_absence:hover {
+.rm_absence:hover, .rm_select:hover, .ok_select:hover {
     opacity:1;
 }

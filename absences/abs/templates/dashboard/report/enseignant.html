@@ -26,11 +26,13 @@
             </td>
             <td>{{c.matiere}}</td>
             <td>
+                <ul class="abs_list">
                 {%for a in absences%}
                     {%if a.cours.id == c.id%}
-                        {{a.etudiant.user.first_name}} {{a.etudiant.user.last_name}} <img class="rm_absence" src="{%static "img/delete.png"%}"/>
+                        <li id='a{{a.id}}'>{{a.etudiant.user.first_name}} {{a.etudiant.user.last_name}} <img class="rm_absence" src="{%static "img/delete.png"%}"/></li>
                     {% endif %}
                 {% endfor %}
+                </ul>
                 <ul class="absence_container"></ul>
                 <img class="add_absence" src="{%static "img/add.png"%}"/>
             </td>
