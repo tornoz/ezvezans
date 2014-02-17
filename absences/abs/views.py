@@ -1,14 +1,17 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext, loader
 from django.contrib.auth.models import User, Group
 from abs.models import Etudiant, Enseignant, Secretaire, Cours, Justificatif, Absence
 from django.forms.models import modelformset_factory
-from abs.forms import JustificatifForm
+#from abs.forms import JustificatifForm
 
 @login_required
 def index(request):
+    if request.user.__str__() == "admin":
+        return redirect('/admin')
+    
     groups = request.user.groups.values_list('name',flat=True)
     
     template = loader.get_template('dashboard/report/' + groups[0] + '.html')
@@ -24,6 +27,8 @@ def index(request):
     if groups[0] == "enseignant":
         var['enseignant'] = Enseignant.get_from_user(request.user) 
         var['cours'] = Cours.objects.filter(enseignant = var['enseignant'])
+        var['absences'] = Absence.objects.filter(cours__in=var['cours'])
+        print(var['absences'])
     elif groups[0] == "etudiant":
         var['etudiant'] = Etudiant.get_from_user(request.user)
         var['absences'] = Absence.objects.filter(etudiant = var['etudiant'])
@@ -51,14 +56,27 @@ def add(request, entity):
     return HttpResponse(template.render(context))
 
 def ajax_absent(request, coursid):
-    cours = Cours.objects.get(id=coursid)
-    groupes = cours.groupe.all()
-    etudiants = Etudiant.objects.filter(groupe__in=groupes)
-    string = ""
-    for e in etudiants:
-        string += (e.user.__str__() + ";")
-    return HttpResponse(string)
-    
+    if request.is_ajax():
+        cours = Cours.objects.get(id=coursid)
+        groupes = cours.groupe.all()
+        etudiants = Etudiant.objects.filter(groupe__in=groupes)
+        #On récupere les etudiants déjà absents à ce cours
+        absences = Absence.objects.filter(cours=cours)
+        absents = []
+        for a in absences:
+            absents.append(a.etudiant)
+        print(absents)
+        string = ""
+        for e in etudiants:
+            if e not in absents:
+                fullname = e.user.first_name + ' ' + e.user.last_name;
+                if fullname == ' ':
+                    fullname = e.user
+                string += (fullname + ";")
+        return HttpResponse(string)
+    return redirect('/abs')
+
+"""
 def add_justificatif(request):
     formset = modelformset_factory(Justificatif, form=JustificatifForm)
     template = loader.get_template('dashboard/form.html')
@@ -70,3 +88,4 @@ def add_justificatif(request):
         'entity_name':'justificatif'
     })
     return HttpResponse(template.render(context))
+"""
