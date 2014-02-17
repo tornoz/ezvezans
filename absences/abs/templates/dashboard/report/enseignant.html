@@ -1,6 +1,9 @@
 {% extends "dashboard/report/base.html" %}
 
 {% block report_content %}
+{% load staticfiles %}
+<script src="{% static "js/enseignant.js" %}"></script>
+
 {{enseignant.departement}}
 <div class="report">
 <table>
@@ -12,7 +15,7 @@
     </thead>
     <tbody>
         {% for c in cours %}
-        <tr>
+        <tr id="{{c.id}}">
             <td>{{c.dateDebut.date}}<br>{{c.dateDebut.time}} => {{c.dateFin.time}}</td>
             <td>
                 <ul>
@@ -24,8 +27,8 @@
             <td>{{c.matiere}}</td>
             <td>
                 absences
-                 {% load staticfiles %}
-                <img src="{%static "img/add.png"%}"/>
+                <div class="absence_container"></div>
+                <img class="add_absence" src="{%static "img/add.png"%}"/>
             </td>
         </tr>
         {% endfor %}

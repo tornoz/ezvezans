@@ -45,3 +45,13 @@ def add(request, entity):
         'entity_name':entity
     })
     return HttpResponse(template.render(context))
+
+def ajax_absent(request, coursid):
+    cours = Cours.objects.get(id=coursid)
+    groupes = cours.groupe.all()
+    etudiants = Etudiant.objects.filter(groupe__in=groupes)
+    string = ""
+    for e in etudiants:
+        string += (e.user.__str__() + ";")
+    return HttpResponse(string)
+    
