@@ -7,5 +7,6 @@ urlpatterns = patterns('',
     url(r'^logout/', 'django.contrib.auth.views.logout', {'next_page':'/abs/login'}),
     url(r'^add/(?P<entity>\w+)', views.add, name='add'),
     url(r'^ajax/absent/(?P<coursid>\d+)', views.ajax_absent, name='ajax_absent'),
+    url(r'^add_justificatif/', views.add_justificatif, name='add_justificatif'),
     url(r'^$', views.index, name='index')
 )

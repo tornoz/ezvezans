@@ -5,6 +5,7 @@ from django.template import RequestContext, loader
 from django.contrib.auth.models import User, Group
 from abs.models import Etudiant, Enseignant, Secretaire, Cours, Justificatif, Absence
 from django.forms.models import modelformset_factory
+from abs.forms import JustificatifForm
 
 @login_required
 def index(request):
@@ -26,6 +27,9 @@ def index(request):
     elif groups[0] == "etudiant":
         var['etudiant'] = Etudiant.get_from_user(request.user)
         var['absences'] = Absence.objects.filter(etudiant = var['etudiant'])
+    else :
+        var['secretaire'] = Secretaire.get_from_user(request.user)
+        var['justificatifs'] = Justificatif.objects.filter(valide=False)
     context = RequestContext(request, var)
           
     
@@ -55,3 +59,14 @@ def ajax_absent(request, coursid):
         string += (e.user.__str__() + ";")
     return HttpResponse(string)
     
+def add_justificatif(request):
+    formset = modelformset_factory(Justificatif, form=JustificatifForm)
+    template = loader.get_template('dashboard/form.html')
+    name = request.user.first_name + ' ' + request.user.last_name
+    context = RequestContext(request, {
+        'user_name': name,
+        'title':'Formulaire',
+        'formset':formset,
+        'entity_name':'justificatif'
+    })
+    return HttpResponse(template.render(context))
