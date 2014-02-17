@@ -21,11 +21,16 @@ class Groupe(models.Model):
 
 class Etudiant(Utilisateur):
     groupe = models.ForeignKey(Groupe)
+    @staticmethod
+    def get_from_user(django_user):
+        try:
+            return Etudiant.objects.get(user=django_user)
+        except Etudiant.DoesNotExist:
+            return -1
     
 
 class Enseignant(Utilisateur):
     departement = models.CharField(max_length=200)
-    
     @staticmethod
     def get_from_user(django_user):
         try:
@@ -34,7 +39,13 @@ class Enseignant(Utilisateur):
             return -1
             
 class Secretaire(Utilisateur):
-	departement = models.CharField(max_length=200)
+    departement = models.CharField(max_length=200)
+    @staticmethod
+    def get_from_user(django_user):
+        try:
+            return Secretaire.objects.get(user=django_user)
+        except Secretaire.DoesNotExist:
+            return -1
 
 class Cours(models.Model):
     dateDebut = models.DateTimeField()
@@ -48,6 +59,8 @@ class Cours(models.Model):
 class Absence(models.Model):
     cours = models.ForeignKey(Cours)
     etudiant = models.ForeignKey(Etudiant)
+    def __str__(instance):
+        return instance.cours.matiere.__str__() + '(' + instance.etudiant.__str__() +')'
 
 class Justificatif(models.Model):
     dateDebut = models.DateTimeField()

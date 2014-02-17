@@ -23,9 +23,11 @@ def index(request):
     if groups[0] == "enseignant":
         var['enseignant'] = Enseignant.get_from_user(request.user) 
         var['cours'] = Cours.objects.filter(enseignant = var['enseignant'])
+    elif groups[0] == "etudiant":
+        var['etudiant'] = Etudiant.get_from_user(request.user)
+        var['absences'] = Absence.objects.filter(etudiant = var['etudiant'])
     context = RequestContext(request, var)
-    
-      
+          
     
     return HttpResponse(template.render(context))
     
