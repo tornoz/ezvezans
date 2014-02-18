@@ -8,20 +8,29 @@ class Utilisateur(models.Model):
     user = models.ForeignKey(User);
     class Meta:
         abstract = True
-
-
-class Promotion(models.Model):
-    department = models.CharField(max_length = 100)
+    def __str__(instance):
+        return instance.identifiant
+	
+class Groupe(models.Model):
+    departement = models.CharField(max_length = 100)
     specialite = models.CharField(max_length = 100)
     annee = models.IntegerField()
+    groupe = models.IntegerField()
+    def __str__(instance):
+        return instance.departement + instance.annee.__str__() + ' ' + instance.specialite + instance.groupe.__str__()
 
 class Etudiant(Utilisateur):
-    groupe = models.CharField(max_length=100)
-    promotion = models.ForeignKey(Promotion)
+    groupe = models.ForeignKey(Groupe)
+    @staticmethod
+    def get_from_user(django_user):
+        try:
+            return Etudiant.objects.get(user=django_user)
+        except Etudiant.DoesNotExist:
+            return -1
+    
 
 class Enseignant(Utilisateur):
     departement = models.CharField(max_length=200)
-    
     @staticmethod
     def get_from_user(django_user):
         try:
@@ -30,21 +39,32 @@ class Enseignant(Utilisateur):
             return -1
             
 class Secretaire(Utilisateur):
-	departement = models.CharField(max_length=200)
+    departement = models.CharField(max_length=200)
+    @staticmethod
+    def get_from_user(django_user):
+        try:
+            return Secretaire.objects.get(user=django_user)
+        except Secretaire.DoesNotExist:
+            return -1
 
 class Cours(models.Model):
     dateDebut = models.DateTimeField()
     dateFin = models.DateTimeField()
     enseignant = models.ForeignKey(Enseignant)
-    promotion = models.ManyToManyField(Promotion)
+    groupe = models.ManyToManyField(Groupe)
     matiere = models.CharField(max_length = 100)
+    def __str__(instance):
+        return instance.dateDebut.__str__() + '->' + instance.dateFin.__str__() + ' : ' + instance.matiere + '(' + instance.enseignant.__str__() + ')'
     
 class Absence(models.Model):
     cours = models.ForeignKey(Cours)
     etudiant = models.ForeignKey(Etudiant)
+    def __str__(instance):
+        return instance.cours.matiere.__str__() + '(' + instance.etudiant.__str__() +')'
 
 class Justificatif(models.Model):
     dateDebut = models.DateTimeField()
     dateFin = models.DateTimeField()
     etudiant = models.ForeignKey(Etudiant)
-    valide = models.BooleanField()
+    valide = models.BooleanField(default=False)
+    fichier=models.FileField(upload_to="/static/justificatif/")

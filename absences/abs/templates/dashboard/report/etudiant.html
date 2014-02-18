@@ -2,16 +2,30 @@
 
 {% block report_content %}
 
-<p>Tu as eu 2 absences durant les 15 derniers jours</p>
+<div class="report">
+<table>
+    <thead>
+        <th>Matière</th>
+        <th>Enseignant</th>
+        <th>Date</th>
+        <th>Heure de début</th>
+        <th>Heure de fin</th>
+    </thead>
+    <tbody>
+        {% for a in absences %}
+        <tr>
+            <td>{{a.cours.matiere}}</td>
+            <td>{{a.cours.enseignant}}</td>
+            <td>{{a.cours.dateDebut.date}}</td>
+            <td>{{a.cours.dateDebut.time}}</td>
+            <td>{{a.cours.dateFin.time}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
 
-<ul>
-    <li>Lundi 25 janvier : TD de Analyse de données avec Phillipe PETER</li>
-    <li>Mardi 3 février : CM de Réseaux II avec Benoit PARREIN</li>
-</ul>
 
-<a href="consult/absences">Consulter toutes les absences</a>
-
-
-<p><a href="add/justificatif">Demander un justificatif</a></p>
+<p><a href="add/justificatif">Soumettre un justificatif</a></p>
 
 {% endblock %}

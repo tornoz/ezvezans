@@ -8,3 +8,71 @@ img.dbicon {
     width:32px;
     margin:2px;
 }
+
+.report table {
+	border:0px;
+	margin:0px;
+	 border-spacing:0px;
+         width:100%;
+         
+}
+
+.report th {
+	padding:5px;
+	border-bottom:3px solid black;
+	margin:0px;
+       text-align:left;
+}
+
+.report td{
+	padding: 5px;
+	border-bottom:1px solid black;
+}
+.report tr {
+color:#555555
+}
+
+.report tr:hover {
+	color:black;
+
+}
+
+.report tr:nth-child(2n) {
+	background-color:#dddddd;
+
+}
+.report thead tr{
+	color:black;
+	background-color:#dddddd;
+}
+.report thead:hover tr  {
+	color:black;
+	background-color:#dddddd;
+}
+
+.report ul {
+    padding-left:0px;
+}
+
+.report li {
+    display:block;
+}
+
+.add_absence {
+    cursor:pointer;
+    opacity:0.5;
+}
+.add_absence:hover {
+    opacity:1;
+}
+
+.rm_absence, .rm_select, .ok_select {
+    margin-bottom:-5px;
+    opacity:0.5;
+    width:24px;
+    cursor:pointer;
+}
+
+.rm_absence:hover, .rm_select:hover, .ok_select:hover {
+    opacity:1;
+}
