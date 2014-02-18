@@ -84,7 +84,8 @@ def ajax_insert_absent(request, coursid, etudiantid):
         etudiant = Etudiant.objects.get(user=user)
         absence = Absence(cours = cours, etudiant = etudiant)
         absence.save()
-        return HttpResponse("ok")
+        latest = Absence.objects.latest('id');
+        return HttpResponse(latest.id)
     return redirect('/abs')
     
 def ajax_delete_absent(request, id):
