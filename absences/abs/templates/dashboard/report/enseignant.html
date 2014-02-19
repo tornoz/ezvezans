@@ -4,44 +4,52 @@
 {% load staticfiles %}
 <script src="{% static "js/enseignant.js" %}"></script>
 
-{{enseignant.departement}}
-<div class="report">
-<table>
-    <thead>
-        <th>Date</th>
-        <th>Groupe(s)</th>
-        <th>Matière</th>
-        <th>Absences</th>
-    </thead>
-    <tbody>
-        {% for c in cours %}
-        <tr id="{{c.id}}">
-            <td>{{c.dateDebut.date}}<br>{{c.dateDebut.time}} => {{c.dateFin.time}}</td>
-            <td>
-                <ul>
-                {%for g in c.groupe.all%}
-                    <li>{{g}}</li>
-                {%endfor%}
-                </ul>
-            </td>
-            <td>{{c.matiere}}</td>
-            <td>
-                <ul class="abs_list">
-                {%for a in absences%}
-                    {%if a.cours.id == c.id%}
-                        <li id='a{{a.id}}'>{{a.etudiant.user.first_name}} {{a.etudiant.user.last_name}} <img class="rm_absence" src="{%static "img/delete.png"%}"/></li>
-                    {% endif %}
-                {% endfor %}
-                </ul>
-                <ul class="absence_container"></ul>
-                <img class="add_absence" src="{%static "img/add.png"%}"/>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class = "tab" id = "tab_cours" tab_name = "Cours">
+    <div class="report">
+    <table>
+        <thead>
+            <th>Date</th>
+            <th>Groupe(s)</th>
+            <th>Matière</th>
+            <th>Absences</th>
+        </thead>
+        <tbody>
+            {% for c in cours %}
+            <tr id="{{c.id}}">
+                <td>{{c.dateDebut.date}}<br>{{c.dateDebut.time}} => {{c.dateFin.time}}</td>
+                <td>
+                    <ul>
+                    {%for g in c.groupe.all%}
+                        <li>{{g}}</li>
+                    {%endfor%}
+                    </ul>
+                </td>
+                <td>{{c.matiere}}</td>
+                <td>
+                    <ul class="abs_list">
+                    {%for a in absences%}
+                        {%if a.cours.id == c.id%}
+                            <li id='a{{a.id}}'>{{a.etudiant.user.first_name}} {{a.etudiant.user.last_name}} <img class="rm_absence" src="{%static "img/delete.png"%}"/></li>
+                        {% endif %}
+                    {% endfor %}
+                    </ul>
+                    <ul class="absence_container"></ul>
+                    <img class="add_absence" src="{%static "img/add.png"%}"/>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
 </div>
-<p><a href="add/absence">Ajouter une absence</a></p>
+<div class = "tab" tab_name = "Ajouter une absence" id = "tab_add_absence">
+
+<p><a href="add/absence" >Ajouter une absence</a></p>
+TODO : formulaire
+</div>
+<div class = "tab" id = "tab_stats" tab_name = "Statistique">
+
+</div>
 
 {% endblock %}
 

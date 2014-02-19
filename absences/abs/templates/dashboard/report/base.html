@@ -4,7 +4,10 @@
  {% load staticfiles %}
     <link rel="stylesheet"href=" {% static "style/report.css"%}" />
     <script src="{% static "js/jquery-2.1.0.min.js" %}"></script>
+    <script src="{% static "js/tabs.js" %}"></script>
 <img class="dbicon" src="/static/img/{{groupname}}.png"/><span class="dashboard">Tableau de bord</span>
+
+<div id = "tabs"></div>
 
 <div id="report_content">
     {% block report_content %}{% endblock %}

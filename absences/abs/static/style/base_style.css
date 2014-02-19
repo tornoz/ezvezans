@@ -37,6 +37,10 @@ color:white;
 text-decoration:none;
 }
 
+.tab {
+    display:none;
+}
+
 button.clean-gray {
     background-color: rgb(238, 238, 238);
     background-image: -moz-linear-gradient(center top , rgb(238, 238, 238), rgb(204, 204, 204));
