@@ -67,4 +67,4 @@ class Justificatif(models.Model):
     dateFin = models.DateTimeField()
     etudiant = models.ForeignKey(Etudiant)
     valide = models.BooleanField(default=False)
-    fichier=models.FileField(upload_to="/static/justificatif/")
+    fichier=models.FileField(upload_to="justificatifs")

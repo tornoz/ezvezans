@@ -83,7 +83,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = '/abs/'
-
-LOGIN_URL = '/abs/login'
+MEDIA_ROOT = '../absences/abs/static/media/'
+MEDIA_URL = '/static/media/'
+LOGIN_URL = '/abs/login/'
 
 

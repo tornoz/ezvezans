@@ -44,10 +44,16 @@
 </div>
 <div class = "tab" tab_name = "Ajouter une absence" id = "tab_add_absence">
 
-<p><a href="add/absence" >Ajouter une absence</a></p>
-TODO : formulaire
+    <form method="post" action="/abs/add/absence" >
+        {% csrf_token %}
+        <table>
+            {{ formset }}
+        </table>
+       <button class="clean-gray" type="submit">Enregistrer</button>
+    </form>
+
 </div>
-<div class = "tab" id = "tab_stats" tab_name = "Statistique">
+<div class = "tab" id = "tab_stats" tab_name = "Statistiques">
 
 </div>
 
