@@ -10,6 +10,11 @@ class Utilisateur(models.Model):
         abstract = True
     def __str__(instance):
         return instance.identifiant
+    def get_fullname(instance):
+        name = instance.user.first_name + ' ' + instance.user.last_name
+        if name == ' ':
+            name = instance.user.__str__
+        return name
 	
 class Groupe(models.Model):
     departement = models.CharField(max_length = 100)

@@ -2,30 +2,60 @@
 
 {% block report_content %}
 
-<div class="report">
-<table>
-    <thead>
-        <th>Matière</th>
-        <th>Enseignant</th>
-        <th>Date</th>
-        <th>Heure de début</th>
-        <th>Heure de fin</th>
-    </thead>
-    <tbody>
-        {% for a in absences %}
-        <tr>
-            <td>{{a.cours.matiere}}</td>
-            <td>{{a.cours.enseignant}}</td>
-            <td>{{a.cours.dateDebut.date}}</td>
-            <td>{{a.cours.dateDebut.time}}</td>
-            <td>{{a.cours.dateFin.time}}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class = "tab" id = "tab_absences" tab_name = "Absences">
+
+    <div class="report">
+        
+        Absences :
+    <table>
+        <thead>
+            <th>Matière</th>
+            <th>Enseignant</th>
+            <th>Date</th>
+            <th>Heure de début</th>
+            <th>Heure de fin</th>
+        </thead>
+        <tbody>
+            {% for a in absences %}
+            <tr>
+                <td>{{a.cours.matiere}}</td>
+                <td>{{a.cours.enseignant.get_fullname}}</td>
+                <td>{{a.cours.dateDebut.date}}</td>
+                <td>{{a.cours.dateDebut.time}}</td>
+                <td>{{a.cours.dateFin.time}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+   <p> Justificatifs en attente</p>
+    <table>
+        <thead>
+            <th>Heure de début</th>
+            <th>Heure de fin</th>
+        </thead>
+        <tbody>
+            {% for j in justif_attente %}
+            <tr>
+                <td>{{j.dateDebut}}</td>
+                <td>{{j.dateFin}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+
+
+
 </div>
+<div class = "tab" id = "tab_add_justificatif" tab_name = "Proposer un justificatif">
+<form method="post" action="/abs/add/justificatif" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            {{ justificatif_formset }}
+        </table>
+       <button class="clean-gray" type="submit">Enregistrer</button>
+    </form>
 
-
-<p><a href="add/justificatif">Soumettre un justificatif</a></p>
-
+</div>
 {% endblock %}

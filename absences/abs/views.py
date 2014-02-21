@@ -6,6 +6,7 @@ from django.contrib.auth.models import User, Group
 from abs.models import Etudiant, Enseignant, Secretaire, Cours, Justificatif, Absence
 from django.forms.models import modelformset_factory
 from abs.forms import JustificatifForm
+from django.forms.widgets import HiddenInput
 
 @login_required
 def index(request):
@@ -34,6 +35,10 @@ def index(request):
     elif groups[0] == "etudiant":
         var['etudiant'] = Etudiant.get_from_user(request.user)
         var['absences'] = Absence.objects.filter(etudiant = var['etudiant'])
+        var['justif_attente'] = Justificatif.objects.filter(etudiant = var['etudiant']).filter(valide = False)
+        JustificatifFormset = modelformset_factory(Justificatif,widgets={'etudiant':HiddenInput, 'valide':HiddenInput})
+        #TODO make a more secure way to add justificatif, cause here a simple modification and the student can send a validated justficatif for another student... 
+        var['justificatif_formset'] = JustificatifFormset(queryset=Justificatif.objects.none(), initial=[{'valide': False, 'etudiant':var['etudiant']}])
     else :
         var['secretaire'] = Secretaire.get_from_user(request.user)
         var['justi_attente'] = Justificatif.objects.filter(valide=False)
@@ -57,6 +62,10 @@ def add(request, entity):
         if formset.is_valid():
             formset.save()
             # Do something. Should generally end with a redirect. For example:
+            return redirect('/abs')
+        else:
+            print("ERROR")
+            print(formset.errors)
             return redirect('/abs')
     else:
         template = loader.get_template('dashboard/form.html')
