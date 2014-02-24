@@ -9,20 +9,19 @@
         Absences :
     <table>
         <thead>
+            <th>Date et heure</th>
             <th>Matière</th>
             <th>Enseignant</th>
-            <th>Date</th>
-            <th>Heure de début</th>
-            <th>Heure de fin</th>
+            <th>Justifiée ?</th>
         </thead>
         <tbody>
             {% for a in absences %}
             <tr>
+                <td>{{a.cours.dateDebut.date}}<br/>
+                {{a.cours.dateDebut.hour}}:{{a.cours.dateDebut.minute}} à {{a.cours.dateFin.hour}}:{{a.cours.dateFin.minute}}</td>
                 <td>{{a.cours.matiere}}</td>
                 <td>{{a.cours.enseignant.get_fullname}}</td>
-                <td>{{a.cours.dateDebut.date}}</td>
-                <td>{{a.cours.dateDebut.time}}</td>
-                <td>{{a.cours.dateFin.time}}</td>
+                <td>Non</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -31,14 +30,15 @@
    <p> Justificatifs en attente</p>
     <table>
         <thead>
-            <th>Heure de début</th>
-            <th>Heure de fin</th>
+            <th>Période</th>
+            <th>Fichier</th>
         </thead>
         <tbody>
             {% for j in justif_attente %}
             <tr>
-                <td>{{j.dateDebut}}</td>
-                <td>{{j.dateFin}}</td>
+                <td>Du {{j.dateDebut.date}} à {{j.dateDebut.hour}}:{{j.dateDebut.minute}}
+                au {{j.dateFin.date}} à {{j.dateFin.hour}}:{{j.dateFin.minute}}</td>
+                <td><a href="/static/media/{{j.fichier}}">Visionner</a></td>
             </tr>
             {% endfor %}
         </tbody>
