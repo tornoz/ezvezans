@@ -119,6 +119,12 @@ def ajax_delete(request,table, id):
         return HttpResponse("ok")
     return redirect('/abs')
     
+def validate_justificatif(request, justid):
+    justificatif = Justificatif.objects.get(id=justid)
+    justificatif.valide = True
+    justificatif.save()
+    return redirect('/abs')
+
 def add_justificatif(request):
     formset = modelformset_factory(Justificatif, form=JustificatifForm)
     template = loader.get_template('dashboard/form.html')

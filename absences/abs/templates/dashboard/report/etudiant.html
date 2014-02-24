@@ -21,7 +21,13 @@
                 {{a.cours.dateDebut.hour}}:{{a.cours.dateDebut.minute}} à {{a.cours.dateFin.hour}}:{{a.cours.dateFin.minute}}</td>
                 <td>{{a.cours.matiere}}</td>
                 <td>{{a.cours.enseignant.get_fullname}}</td>
-                <td>Non</td>
+                <td>
+                    {% if a.est_justifiee%}
+                        <img src="/static/img/check.png"/>
+                    {% else %}
+                        <img src="/static/img/close.png"/>
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
         </tbody>

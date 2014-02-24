@@ -66,10 +66,19 @@ class Absence(models.Model):
     etudiant = models.ForeignKey(Etudiant)
     def __str__(instance):
         return instance.cours.matiere.__str__() + '(' + instance.etudiant.__str__() +')'
+    def est_justifiee(instance):
+        query = Justificatif.objects.filter(etudiant=instance.etudiant)
+        query = query.filter(valide = True)
+        query = query.filter(dateDebut__lt = instance.cours.dateDebut)
+        query = query.filter(dateFin__gt = instance.cours.dateFin)
+        if(query.count() > 0):
+            return True
+        else:
+            return False
 
 class Justificatif(models.Model):
     dateDebut = models.DateTimeField()
     dateFin = models.DateTimeField()
     etudiant = models.ForeignKey(Etudiant)
     valide = models.BooleanField(default=False)
-    fichier=models.FileField(upload_to="justificatifs")
+    fichier=models.FileField(upload_to="justificatifs", null=True)
