@@ -27,15 +27,25 @@ def index(request):
     }
     
     if groups[0] == "enseignant":
+        #Objet enseignant
         var['enseignant'] = Enseignant.get_from_user(request.user) 
-        var['cours'] = Cours.objects.filter(enseignant = var['enseignant'])
+        
+        #15 dernies cours
+        var['cours'] = Cours.objects.filter(enseignant = var['enseignant']).order_by('dateDebut').reverse()[:15]
+        
+        #Absences par cours
         var['absences'] = Absence.objects.filter(cours__in=var['cours'])
+        
+        #Formset
         Formset = modelformset_factory(Absence)
         var['formset'] = Formset(queryset=Absence.objects.none())
-        #Limite les cours à ceux de l'enseignant
+        
+        #Limite les cours du formset à ceux de l'enseignant
         var['formset'].forms[0].fields['cours'].queryset = Cours.objects.filter(enseignant = var['enseignant'])
+        
+        #Stats
         total_absences =  var['absences'].count()
-        total_cours =  var['cours'].count()
+        total_cours =  Cours.objects.filter(enseignant = var['enseignant']).count()
         if total_cours != 0:
             var['absences_moyennes'] = total_absences/total_cours
         else:
@@ -59,6 +69,13 @@ def index(request):
                 non_justi = non_justi +1
         var['stat_absences_justifiees'] = justi
         var['stat_absences_non_justifiees'] = non_justi
+        
+        var['message'] = ""
+        if var['stat_absences_non_justifiees'] > 5:
+            var['message'] = 'Une alerte a été envoyée au responsable du département'
+        elif var['stat_absences_non_justifiees'] > 2:
+            var['message'] = 'Une alerte sera envoyée après 6 absences non justifiees'
+            
     else :
         var['secretaire'] = Secretaire.get_from_user(request.user)
         var['justi_attente'] = Justificatif.objects.filter(valide=False)
@@ -154,3 +171,4 @@ def validate_justificatif(request, justid):
     justificatif.valide = True
     justificatif.save()
     return redirect('/abs')
+    

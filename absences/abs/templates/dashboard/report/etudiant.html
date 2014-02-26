@@ -5,7 +5,13 @@
 <div class = "tab" id = "tab_absences" tab_name = "Absences">
 
     <div class="report">
-        
+        {% if stat_absences_non_justifiees > 2 %}
+            <div class="ui-state-error">
+                <p>
+                <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                Tu as {{ stat_absences_non_justifiees }} absences non justifiées. {{message}}
+                </p></div>
+        {% endif %}
        <h2>Dernières absences</h2>
     <table>
         <thead>
