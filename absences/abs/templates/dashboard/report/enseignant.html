@@ -25,11 +25,11 @@
                     </ul>
                 </td>
                 <td>{{c.matiere}}</td>
-                <td>
+                <td class = "absences">
                     <ul class="abs_list">
                     {%for a in absences%}
                         {%if a.cours.id == c.id%}
-                            <li id='a{{a.id}}'>{{a.etudiant.user.first_name}} {{a.etudiant.user.last_name}} <img class="rm_absence" src="{%static "img/delete.png"%}"/></li>
+                            <li {%if a.est_justifiee%} title="Absence justifiée" class="justifiee" {%else%} title = "Absence injustifiée"{%endif%} id='a{{a.id}}'>{{a.etudiant.get_fullname}} <img class="rm_absence" src="{%static "img/delete.png"%}"/></li>
                         {% endif %}
                     {% endfor %}
                     </ul>
@@ -54,8 +54,24 @@
 
 </div>
 <div class = "tab" id = "tab_stats" tab_name = "Statistiques">
-
+    <ul>
+        <li>Nombre moyen d'élèves absents : {{absences_moyennes}}</li>
+        <li>Nombre d'élèce absents sur les 15 derniers jours : {{absents_derniers_jours}}</li>
+    
+    </ul>
 </div>
+<script>
+ $( ".abs_list li" ).tooltip({
+    show: {
+        effect: "slideDown",
+        delay: 100
+    },
+    hide: {
+        effect: "slideUp",
+        delay: 100
+    }
+});
+</script>
 
 {% endblock %}
 

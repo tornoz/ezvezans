@@ -1,5 +1,7 @@
 body {
     margin:0;
+    font-size:12px;
+    font-family:Arial
 }
 #content {
         margin: 5px 20px 0 20px;
@@ -45,18 +47,22 @@ text-decoration:none;
 
 
 #tabs a {
-    padding: 10px 10px 2px 10px;
+    padding: 7px 7px 2px 7px;
     background-color:#FAFAFA;
     border-width: 1px;
     border-style: solid;
     border-color: rgb(204, 204, 204) rgb(204, 204, 204) rgb(187, 187, 187);
     text-decoration:none;
     color:#AAAAAA;
+    
+    
 }
 
 #tabs a.displayed {
     background-color:#EEEEEE;
     color:#222222;
+    padding: 10px 15px 3px 15px;
+    
 }
 
 button.clean-gray {
@@ -78,3 +84,15 @@ button.clean-gray {
     text-shadow: 0px 1px 0px rgb(238, 238, 238);
     width: 150px;
 }
+/* css for timepicker */
+.ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
+.ui-timepicker-div dl { text-align: left; }
+.ui-timepicker-div dl dt { float: left; clear:left; padding: 0 0 0 5px; }
+.ui-timepicker-div dl dd { margin: 0 10px 10px 45%; }
+.ui-timepicker-div td { font-size: 90%; }
+.ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
+
+.ui-timepicker-rtl{ direction: rtl; }
+.ui-timepicker-rtl dl { text-align: right; padding: 0 5px 0 0; }
+.ui-timepicker-rtl dl dt{ float: right; clear: right; }
+.ui-timepicker-rtl dl dd { margin: 0 45% 10px 10px; }

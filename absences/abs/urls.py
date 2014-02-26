@@ -9,7 +9,6 @@ urlpatterns = patterns('',
     url(r'^ajax/absent/(?P<coursid>\d+)', views.ajax_absent, name='ajax_absent'),
     url(r'^ajax/insert/absent/(?P<coursid>\d+)/(?P<etudiantid>\w+)', views.ajax_insert_absent, name='ajax_insert_absent'),
     url(r'^ajax/delete/(?P<table>\w+)/(?P<id>\d+)', views.ajax_delete, name='ajax_delete'),
-    url(r'^add_justificatif/', views.add_justificatif, name='add_justificatif'),
-     url(r'^validate/(?P<justid>\d+)', views.validate_justificatif, name='valdate_justificatif'),
+    url(r'^validate/(?P<justid>\d+)', views.validate_justificatif, name='valdate_justificatif'),
     url(r'^$', views.index, name='index')
 )

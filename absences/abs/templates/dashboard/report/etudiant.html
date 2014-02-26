@@ -6,7 +6,7 @@
 
     <div class="report">
         
-        Absences :
+       <h2>Dernières absences</h2>
     <table>
         <thead>
             <th>Date et heure</th>
@@ -33,11 +33,12 @@
         </tbody>
     </table>
     
-   <p> Justificatifs en attente</p>
+   <h2>Derniers justificatifs</h2>
     <table>
         <thead>
             <th>Période</th>
             <th>Fichier</th>
+            <th>Validé ?</th>
         </thead>
         <tbody>
             {% for j in justif_attente %}
@@ -45,6 +46,13 @@
                 <td>Du {{j.dateDebut.date}} à {{j.dateDebut.hour}}:{{j.dateDebut.minute}}
                 au {{j.dateFin.date}} à {{j.dateFin.hour}}:{{j.dateFin.minute}}</td>
                 <td><a href="/static/media/{{j.fichier}}">Visionner</a></td>
+                <td>
+                    {% if j.valide%}
+                        <img src="/static/img/check.png"/>
+                    {% else %}
+                        <img src="/static/img/close.png"/>
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -56,12 +64,57 @@
 </div>
 <div class = "tab" id = "tab_add_justificatif" tab_name = "Proposer un justificatif">
 <form method="post" action="/abs/add/justificatif" enctype="multipart/form-data">
-        {% csrf_token %}
+       {% csrf_token %}
+        {{ justificatif_formset.management_form }}
         <table>
-            {{ justificatif_formset }}
+            {% for form in justificatif_formset %}
+            
+                    <tr>
+                       <td> Date début :</td><td class="datepicker"> {{ form.dateDebut }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Date fin :</td><td class="datepicker"> {{ form.dateFin }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td></td><td> {{ form.etudiant }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td></td><td> {{ form.valide }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>{{ form.fichier.label_tag }}</td><td> {{ form.fichier }}</td>
+                    </tr>
+                    
+                
+            {% endfor %}
         </table>
-       <button class="clean-gray" type="submit">Enregistrer</button>
+        {{ form.id }}
+       <button type="submit">Enregistrer</button>
     </form>
 
 </div>
+
+<div class = "tab" id = "tab_statitiques" tab_name = "Statistiques">
+<ul>
+<li>Nombre total d'absences : {{stat_absences_total}}
+<ul>
+<li>Justifiées : {{stat_absences_justifiees}}</li>
+<li>Non-justifiées : {{stat_absences_non_justifiees}}</li>
+</ul>
+</li>
+
+
+</ul>
+
+</div>
+<script>
+$('.datepicker input').datetimepicker();
+$('.datepicker input').datetimepicker("option", "dateFormat", "dd/mm/yy");
+$('button').button();
+$('input[type=file]').button();
+</script>
 {% endblock %}

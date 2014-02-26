@@ -12,24 +12,31 @@ img.dbicon {
 .report table {
 	border:0px;
 	margin:0px;
-	 border-spacing:0px;
-         width:100%;
-         
+	border-spacing:0px;
+    width:100%;
+    table-layout: fixed;
 }
 
 .report th {
 	padding:5px;
 	border-bottom:3px solid black;
 	margin:0px;
-       text-align:left;
+    text-align:left;
 }
 
 .report td{
 	padding: 5px;
 	border-bottom:1px solid black;
+    
 }
+
+td.absences {
+    overflow: hidden;
+  
+}
+
 .report tr {
-color:#555555
+    color:#555555
 }
 
 .report tr:hover {
@@ -76,3 +83,13 @@ color:#555555
 .rm_absence:hover, .rm_select:hover, .ok_select:hover, .imgbutton:hover {
     opacity:1;
 }
+
+.abs_list li {
+    color:red;
+}
+
+.abs_list li.justifiee {
+    color:green;
+}
+
+

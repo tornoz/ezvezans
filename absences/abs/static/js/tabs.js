@@ -27,9 +27,9 @@ $(window).ready(function() {
        $('.tab.displayed').slideUp('fast', function() {
            $(tabid).slideDown();
            $('.tab.displayed').removeClass('displayed');
-           $('#tabs a.displayed').removeClass('displayed');
+           $('#tabs a.displayed').switchClass('displayed','',400);
            $(tabid).addClass('displayed');
-           $(tab).addClass('displayed');
+           $(tab).switchClass('','displayed',400);
         });
        
    });

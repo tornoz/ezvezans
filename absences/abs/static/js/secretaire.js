@@ -5,7 +5,7 @@
         var node = $(this).parent().parent();
         $.get( "ajax/delete/justificatif/" + justid, function( data) {
                     if(data == "ok") {
-                        node.remove();
+                        node.fadeOut();
                     }
                  });
     };

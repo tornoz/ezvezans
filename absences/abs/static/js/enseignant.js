@@ -23,8 +23,9 @@ $(window).ready(function() {
                 var str = '<option value="'+names[1]+'">'+names[0]+'</option>';
                  console.log(str);
                  ajaxLoader.remove();
-                select.append(str);
+                 select.append(str);
             }
+            
             //Create the list element and append it the select and buttons
             var list_elem = $(document.createElement('li'));
             list_elem.append(select);
@@ -36,12 +37,19 @@ $(window).ready(function() {
             img_ok.attr('src', "/static/img/check.png");
             list_elem.append(img_rm);
             list_elem.append(img_ok);
+            list_elem.css('display','none');
+            
             //Add the element to the list
             abs_container.append(list_elem);
+            
+            list_elem.slideDown();
+            
             img_rm.click(function() {
-                list_elem.remove();
+                list_elem.slideUp(function() {
+                    $(this).remove();
+                });
             });
-           img_ok.click(function() {
+            img_ok.click(function() {
                  var etudiantid = img_ok.parent().find('.etudiantSelector').val();
                  $.get( "ajax/insert/absent/" + coursId + '/' + etudiantid, function( data ) {
                     if(data != "error") {
@@ -52,10 +60,32 @@ $(window).ready(function() {
                         img.click(rm_absence);
                         var abslist = abs_container.parent().find('.abs_list');
                         var li = $(document.createElement('li'));
-                        li.attr('id', 'a' + data);
+                        var isJustified = data.substring(0,1);
+                        var newId = data.substring(1);
+                        li.attr('id', 'a' + newId);
+                        if(isJustified == "t") {
+                            li.css('color', 'green');
+                            li.attr('title', 'Absence justifiée');
+                        }
+                        else {
+                            li.css('color', 'red');
+                            li.attr('title', 'Absence injustifiée');
+                        }
+                        li.tooltip({
+                            show: {
+                                effect: "slideDown",
+                                delay: 100
+                            },
+                            hide: {
+                                effect: "slideUp",
+                                delay: 100
+                            }
+                        });
                         li.append(etudiant_name);
                         li.append(img);
+                        li.css('display', 'none');
                         abslist.append(li);
+                        li.slideDown();
                         img_rm.click();
                     }
                  });
@@ -67,10 +97,10 @@ $(window).ready(function() {
     var rm_absence = function() {
         var absenceid = $(this).parent().attr('id').replace('a', '');
         var node = $(this).parent();
-        $.get( "ajax/delete/absent/" + absenceid, function( data) {
+        $.get( "ajax/delete/absence/" + absenceid, function( data) {
                     if(data == "ok") {
                         console.log("COUCOU");
-                        node.remove();
+                        node.slideUp();
                     }
                  });
     };

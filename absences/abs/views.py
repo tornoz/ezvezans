@@ -7,6 +7,7 @@ from abs.models import Etudiant, Enseignant, Secretaire, Cours, Justificatif, Ab
 from django.forms.models import modelformset_factory
 from abs.forms import JustificatifForm
 from django.forms.widgets import HiddenInput
+from datetime import datetime, timedelta
 
 @login_required
 def index(request):
@@ -31,22 +32,42 @@ def index(request):
         var['absences'] = Absence.objects.filter(cours__in=var['cours'])
         Formset = modelformset_factory(Absence)
         var['formset'] = Formset(queryset=Absence.objects.none())
-        print(var['absences'])
+        #Limite les cours à ceux de l'enseignant
+        var['formset'].forms[0].fields['cours'].queryset = Cours.objects.filter(enseignant = var['enseignant'])
+        total_absences =  var['absences'].count()
+        total_cours =  var['cours'].count()
+        if total_cours != 0:
+            var['absences_moyennes'] = total_absences/total_cours
+        else:
+            var['absences_moyennes'] = "Pas de cours"
+        cours = Cours.objects.filter(enseignant = var['enseignant']).filter(dateDebut__gt = datetime.today()-timedelta(days=15))
+        var['absents_derniers_jours'] = Absence.objects.filter(cours__in = cours).count()
     elif groups[0] == "etudiant":
         var['etudiant'] = Etudiant.get_from_user(request.user)
         var['absences'] = Absence.objects.filter(etudiant = var['etudiant'])
-        var['justif_attente'] = Justificatif.objects.filter(etudiant = var['etudiant']).filter(valide = False)
+        var['justif_attente'] = Justificatif.objects.filter(etudiant = var['etudiant'])
         JustificatifFormset = modelformset_factory(Justificatif,widgets={'etudiant':HiddenInput, 'valide':HiddenInput})
         #TODO make a more secure way to add justificatif, cause here a simple modification and the student can send a validated justficatif for another student... 
         var['justificatif_formset'] = JustificatifFormset(queryset=Justificatif.objects.none(), initial=[{'valide': False, 'etudiant':var['etudiant']}])
+        var['stat_absences_total'] = var['absences'].count()
+        justi = 0
+        non_justi = 0
+        for a in var['absences'].all():
+            if a.est_justifiee():
+                justi = justi +1
+            else:
+                non_justi = non_justi +1
+        var['stat_absences_justifiees'] = justi
+        var['stat_absences_non_justifiees'] = non_justi
     else :
         var['secretaire'] = Secretaire.get_from_user(request.user)
         var['justi_attente'] = Justificatif.objects.filter(valide=False)
         var['justi_derniers'] = Justificatif.objects.filter(valide=True)
         JustificatifFormset = modelformset_factory(Justificatif)
-        var['justificatif_formset'] = JustificatifFormset(queryset=Justificatif.objects.none())
+        var['justificatif_formset'] = JustificatifFormset(queryset=Justificatif.objects.none(), prefix="justificatif")
         CoursFormset = modelformset_factory(Cours)
-        var['cours_formset'] = CoursFormset(queryset=Cours.objects.none())
+        var['cours_formset'] = CoursFormset(queryset=Cours.objects.none(),  prefix="cours")
+        
     context = RequestContext(request, var)
           
     
@@ -57,15 +78,18 @@ def index(request):
 def add(request, entity):
     entity_array = {'enseignant':Enseignant, 'etudiant':Etudiant,'secretaire':Secretaire, 'cours':Cours, 'justificatif':Justificatif, 'absence':Absence}
     Formset = modelformset_factory(entity_array[entity])
+    
     if request.method == "POST":
-        formset = Formset(request.POST, request.FILES)
+        if 'prefix' in request.POST:
+            prefix = request.POST['prefix']
+        else:
+            prefix = ""
+        formset = Formset(request.POST, request.FILES, prefix = prefix)
         if formset.is_valid():
             formset.save()
             # Do something. Should generally end with a redirect. For example:
             return redirect('/abs')
         else:
-            print("ERROR")
-            print(formset.errors)
             return redirect('/abs')
     else:
         template = loader.get_template('dashboard/form.html')
@@ -101,14 +125,20 @@ def ajax_absent(request, coursid):
 
 
 def ajax_insert_absent(request, coursid, etudiantid):
-    if request.is_ajax():
+    if True:#request.is_ajax():
         cours = Cours.objects.get(id=coursid)
         user = User.objects.get(username=etudiantid)
         etudiant = Etudiant.objects.get(user=user)
         absence = Absence(cours = cours, etudiant = etudiant)
         absence.save()
         latest = Absence.objects.latest('id');
-        return HttpResponse(latest.id)
+        reponse = ""
+        if absence.est_justifiee():
+            reponse = "t"
+        else:
+            reponse = "f"
+        reponse += latest.id.__str__()
+        return HttpResponse(reponse)
     return redirect('/abs')
     
 def ajax_delete(request,table, id):
@@ -124,15 +154,3 @@ def validate_justificatif(request, justid):
     justificatif.valide = True
     justificatif.save()
     return redirect('/abs')
-
-def add_justificatif(request):
-    formset = modelformset_factory(Justificatif, form=JustificatifForm)
-    template = loader.get_template('dashboard/form.html')
-    name = request.user.first_name + ' ' + request.user.last_name
-    context = RequestContext(request, {
-        'user_name': name,
-        'title':'Formulaire',
-        'formset':formset,
-        'entity_name':'justificatif'
-    })
-    return HttpResponse(template.render(context))
