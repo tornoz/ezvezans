@@ -13,33 +13,38 @@
                 </p></div>
         {% endif %}
        <h2>Dernières absences</h2>
-    <table>
-        <thead>
-            <th>Date et heure</th>
-            <th>Matière</th>
-            <th>Enseignant</th>
-            <th>Justifiée ?</th>
-        </thead>
-        <tbody>
-            {% for a in absences %}
-            <tr>
-                <td>{{a.cours.dateDebut.date}}<br/>
-                {{a.cours.dateDebut.hour}}:{{a.cours.dateDebut.minute}} à {{a.cours.dateFin.hour}}:{{a.cours.dateFin.minute}}</td>
-                <td>{{a.cours.matiere}}</td>
-                <td>{{a.cours.enseignant.get_fullname}}</td>
-                <td>
-                    {% if a.est_justifiee%}
-                        <img src="/static/img/check.png"/>
-                    {% else %}
-                        <img src="/static/img/close.png"/>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+       {% if absences.size > 0 %}
+            <table>
+                <thead>
+                    <th>Date et heure</th>
+                    <th>Matière</th>
+                    <th>Enseignant</th>
+                    <th>Justifiée ?</th>
+                </thead>
+                <tbody>
+                    {% for a in absences %}
+                    <tr>
+                        <td>{{a.cours.dateDebut.date}}<br/>
+                        {{a.cours.dateDebut.hour}}:{{a.cours.dateDebut.minute}} à {{a.cours.dateFin.hour}}:{{a.cours.dateFin.minute}}</td>
+                        <td>{{a.cours.matiere}}</td>
+                        <td>{{a.cours.enseignant.get_fullname}}</td>
+                        <td>
+                            {% if a.est_justifiee%}
+                                <img src="/static/img/check.png"/>
+                            {% else %}
+                                <img src="/static/img/close.png"/>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+         {% else %}
+            Pas d'absences
+        {%endif%}
     
    <h2>Derniers justificatifs</h2>
+   {% if justif_attente.size > 0 %}
     <table>
         <thead>
             <th>Période</th>
@@ -63,6 +68,9 @@
             {% endfor %}
         </tbody>
     </table>
+     {% else %}
+            Pas de justificatifs an attente
+        {%endif%}
     </div>
 
 
