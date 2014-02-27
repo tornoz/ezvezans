@@ -1,6 +1,6 @@
 $(window).ready(function() {
    $('.tab').each(function() {
-       $('#tabs').append("<a href='#" + $(this).attr('id') + "'>" + $(this).attr("tab_name") + "</a> ");
+       $('#tabs').append("<li><a href='#" + $(this).attr('id') + "'>" + $(this).attr("tab_name") + "</a></li> ");
    });
    
    var hash = window.location.hash;

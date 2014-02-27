@@ -1,3 +1,6 @@
+
+
+
 body {
     margin:0;
     font-size:12px;
@@ -44,7 +47,13 @@ text-decoration:none;
     margin-top:10px;
 }
 
-
+#tabs li {
+    display:inline;
+}
+#tabs {
+    margin:0;
+    padding:0;
+}
 
 #tabs a {
     padding: 7px 7px 2px 7px;
@@ -96,3 +105,16 @@ button.clean-gray {
 .ui-timepicker-rtl dl { text-align: right; padding: 0 5px 0 0; }
 .ui-timepicker-rtl dl dt{ float: right; clear: right; }
 .ui-timepicker-rtl dl dd { margin: 0 45% 10px 10px; }
+
+@media screen and (max-width: 450px) {
+    #tabs li {
+        display:block;
+        margin : 14px 0 14px 0;
+    }
+     
+    .dashboard {
+        font-size:16px;
+    }
+    
+    
+}
